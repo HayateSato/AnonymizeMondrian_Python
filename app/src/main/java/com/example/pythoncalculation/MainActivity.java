@@ -1,7 +1,5 @@
 package com.example.pythoncalculation;
 
-
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,13 +9,6 @@ import androidx.core.view.ViewCompat;
 import com.chaquo.python.android.AndroidPlatform;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
-
-
-
-
-
-
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     .callAttr("get_csvfile", "dataset.csv"); // function name and CSV file path
 
             // Set the result to the TextView
-//            textViewOutput.setText(pyObjectResult.toString());
+            textViewOutput.setText(pyObjectResult.toString());
 //            ((ViewGroup) findViewById(R.id.tableContainer)).addView(new TableUIBuilder(this, pyObjectResult).build());
         } catch (Exception e) {
             // Handle any exceptions
@@ -75,10 +66,8 @@ public class MainActivity extends AppCompatActivity {
             PyObject pyObjectResult = python.getModule("mondrian") // Python file name (without .py)
                     .callAttr("anonymize_execute"); // function name and CSV file path
 
-            Log.d(TAG, "MainActivity: anonymization is scuccesufully completed");
+            Log.d(TAG, "MainActivity: anonymization is successfully completed");
             textViewOutput.setText(pyObjectResult.toString());
-
-
 
             // Set the result to the TextView
 //            textViewOutput.setText(pyObjectResult.toString());
