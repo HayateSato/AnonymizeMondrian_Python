@@ -119,11 +119,9 @@ def build_tree(df):
 def build_all_hierarchy_tree(hierarchy_file_dir_path):
     hierarchy_tree_dict = {}
     files = glob.glob(os.path.join(hierarchy_file_dir_path, '*.csv'))
-
     for file_path in files:
         file_name = os.path.basename(file_path)
         hierarchy_type = file_name.split('_')[2].split('.')[0]
         hierarchy_tree = HierarchyTree(file_path)
         hierarchy_tree_dict[hierarchy_type] = hierarchy_tree
-        print(f"for looped: {hierarchy_tree}")
     return hierarchy_tree_dict
