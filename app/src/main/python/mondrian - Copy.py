@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import hierarchy_tree as h_tree
 from input_reader import get_csvfile
+import time
 
 
 def summarized(partition, dim, qi_list):
@@ -127,15 +128,9 @@ def check_k_anonymity(df, qi_list, k):
 
 
 
-
-
-
-def run_anonymize(qi_list, sensitive_attributes, identifier, data_file, hierarchy_file_dir, k=5):
+def run_anonymize(qi_list, data_file, hierarchy_file_dir, k=5):
     # suppose n records(num of rows). k-anonymity. m quasi-identifiers. Calculate time complexity
-    print("inside the run anonymization function")
-    print(data_file)
-    # df = pd.read_csv(data_file)
-    df = get_csvfile(date_file_path)
+    df = pd.read_csv(data_file)
 
     hierarchy_tree_dict = h_tree.build_all_hierarchy_tree(hierarchy_file_dir)
 
@@ -158,53 +153,45 @@ def run_anonymize(qi_list, sensitive_attributes, identifier, data_file, hierarch
     df = map_num_to_text(df, qi_list, hierarchy_tree_dict)  # time: O(n*m) = (m<<n) = O(n)
     # total time complexity: O(n*log(n))
 
+    return df
+
+def anonymize_execute():
+    tic = time.time()
+    k = 10  # Example k value. You can change it as per your requirement.
+    print("running anonymization")
+    qi_list = ['sex', 'age', 'race', 'marital-status', 'education', 'native-country', 'workclass', 'occupation']
+    current_dir = os.path.dirname(__file__)  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/
+    data_file = os.path.join(current_dir, "dataset.csv")   # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv
+    hierarchy_file_dir = os.path.join(current_dir, "hierarchy/")  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/hierarchy
+    data_frame = run_anonymize(qi_list, data_file, hierarchy_file_dir, k)
+
+    print(f"run_anonymize executed with K = {k}")
+
+    # Use the app's files directory to store the output
+    anonymized_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/anonymized/"   # os.path.join(current_dir, "anonymized/")
+
+    # Ensure the directory exists
+    os.makedirs(anonymized_file_dir_path, exist_ok=True)
+
     output_file_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
-    df.to_csv(output_file_path, index=False)
-    return output_file_path  # Return the anonymized file path
 
+    try:
+        data_frame.to_csv(output_file_path, index=False)
+        print(f"Anonymized data saved to: {output_file_path}")
+    except Exception as e:
+        print(f"Error saving file: {str(e)}")
+        # # Optionally, you can try to save in a different location if this fails
+        # fallback_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
+        # data_frame.to_csv(fallback_path, index=False)
+        # print(f"Anonymized data saved to fallback location: {fallback_path}")
 
+    toc = time.time()
+    execution_time = toc - tic
+    df_short = data_frame.iloc[850:880, :7]
+    print(df_short)
+    print(f"Execution time: {execution_time:.2f} seconds")
 
-
-if __name__ == '__main__':
-    print("Test mode: Running mondrian.py")
-    k = 3
-    # current_dir = os.path.dirname(__file__)  # Directory of the current Python file
-    # print(f"---------------------------- current directory is : {current_dir}")
-    # date_file_path = os.path.join(current_dir, "dataset.csv")
-    # anonymized_file_dir_path = os.path.join(current_dir, "/anonymized/")  # Be careful with the leading "/"
-    # hierarchy_file_dir_path = os.path.join(current_dir, "/hierarchy/")  # Same issue as above
-
-    date_file_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv"
-    anonymized_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/anonymized"
-    hierarchy_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/hierarchy"
-
-    # Calling the get_csvfile function from input_reader.py
-    first_rows = get_csvfile(date_file_path)
-    if isinstance(first_rows, str) and first_rows.startswith("Error"):
-        print(first_rows)  # If there's an error, it will print the error message
-    else:
-        print(f"First 3 rows of the dataset:\n{first_rows}")
-
-    # Continue with other operations after reading the CSV
-    qi = ['sex', 'age', 'race', 'marital-status', 'education', 'native-country', 'workclass', 'occupation']
-    sensitive_attributes = ['salary-class']
-    identifiers = ['ID', 'soc_sec_id', 'given_name', 'surname']
-
-    data_frame = run_anonymize(qi, sensitive_attributes, identifiers, date_file_path, hierarchy_file_dir_path, k=k)
-
-    # Save the anonymized DataFrame to a CSV file
-    output_file_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
-    data_frame.to_csv(output_file_path, index=False)
-    print(f"Anonymized data saved to: {output_file_path}")
-
-
-def open_from_input_reader():
-    date_file_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv"
-
-    # Calling the get_csvfile function from input_reader.py
-    first_rows = get_csvfile(date_file_path)
-    return first_rows
-
+    return df_short
 
 
 
@@ -213,36 +200,26 @@ def open_from_input_reader():
 # if __name__ == '__main__':
 #     print("Test mode: Running mondrian.py")
 #     k = 3
-#     current_dir = os.path.dirname(__file__)  # Directory of the current Python file
-#     print(f"---------------------------- current directory is : {current_dir}")
-#     date_file_path = os.path.join(current_dir, "dataset.csv")
-#     anonymized_file_dir_path = os.path.join(current_dir, "/anonymized/")
-#     hierarchy_file_dir_path = os.path.join(current_dir, "/hierarchy/")
+#     date_file_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv"
+#     anonymized_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/anonymized"
+#     hierarchy_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/hierarchy"
 #
-#
-#
-#     # date_file_path = 'assets/dataset.csv'
-#     # anonymized_file_dir_path = '/anonymized/python/'
-#     # hierarchy_file_dir_path = '/hierarchy/'
-#
-#     qi = ['sex', 'age', 'race', 'marital-status', 'education', 'native-country', 'workclass', 'occupation']
+#     quasi_identifiers = ['sex', 'age', 'race', 'marital-status', 'education', 'native-country', 'workclass', 'occupation']
 #     sensitive_attributes = ['salary-class']
 #     identifiers = ['ID', 'soc_sec_id', 'given_name', 'surname']
 #
-#     ###### For a different dataset #########################################
-#     # qi = ["Age","BMI","Sex","Height","Weight"]
-#     # sa = ["Diagnosis_Presumptive"]    ### sensitive_attributes
-#     # identifiers = ["Diagnosis","Alvarado_Score","Paedriatic_Appendicitis_Score"]
-#     ########################################################################
+#     #     ###### For a different dataset #########################################
+#     #     # qi = ["Age","BMI","Sex","Height","Weight"]
+#     #     # sa = ["Diagnosis_Presumptive"]    ### sensitive_attributes
+#     #     # identifiers = ["Diagnosis","Alvarado_Score","Paedriatic_Appendicitis_Score"]
+#     #     ########################################################################
 #
-#     data_frame = run_anonymize(qi, sensitive_attributes, identifiers, date_file_path, hierarchy_file_dir_path, k=k)
+#     data_frame = run_anonymize(quasi_identifiers, date_file_path, hierarchy_file_dir_path, k=k)
 #
 #     # Save the anonymized DataFrame to a CSV file
 #     output_file_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
 #     data_frame.to_csv(output_file_path, index=False)
 #     print(f"Anonymized data saved to: {output_file_path}")
-
-
 
 
 

@@ -54,6 +54,7 @@ chaquopy {
         pip {
             install("numpy")
             install("pandas")
+            install ("cryptography")
 //            install("glob")
         }
     }

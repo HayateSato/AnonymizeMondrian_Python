@@ -6,6 +6,12 @@ from input_reader import get_csvfile
 import time
 
 
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import base64
+
+
 def summarized(partition, dim, qi_list):
     """
     change the values of the quasi-identifiers columns to the range of the values in the partition
@@ -127,12 +133,44 @@ def check_k_anonymity(df, qi_list, k):
     return check_k_anonymity_flag
 
 
+def generate_key(password):
+    password = password.encode()
+    salt = b'salt_'  # You can change this salt, but keep it constant
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+    )
+    key = base64.urlsafe_b64encode(kdf.derive(password))
+    return key
 
-def run_anonymize(qi_list, data_file, hierarchy_file_dir, k=5):
+def encrypt_value(value, fernet):
+    return fernet.encrypt(str(value).encode()).decode()
+
+def decrypt_value(value, fernet):
+    return fernet.decrypt(value.encode()).decode()
+
+    return df
+
+
+
+def run_anonymize(qi_list, data_file, hierarchy_file_dir, k=5):  # original of old
+# def run_anonymize(qi_list, sensitive_attributes, identifier, data_file, hierarchy_file_dir, k=5, password=None): # original of new
+# def run_anonymize(qi_list, identifiers, data_file, hierarchy_file_dir, k=5, password=None):
     # suppose n records(num of rows). k-anonymity. m quasi-identifiers. Calculate time complexity
     df = pd.read_csv(data_file)
 
+    # if password:
+    #     key = generate_key(password)
+    #     fernet = Fernet(key)
+    #     for identifier in identifiers:
+    #         if identifier in df.columns:
+    #             df[identifier] = df[identifier].apply(lambda x: encrypt_value(x, fernet))
+
     hierarchy_tree_dict = h_tree.build_all_hierarchy_tree(hierarchy_file_dir)
+    print(f"hirerarchy_tree_dict: {hierarchy_tree_dict})")
+
 
     df = map_text_to_num(df, qi_list, hierarchy_tree_dict)  # time: O(n*m) = (m<<n) = O(n)
     if df.isnull().values.any():
@@ -155,6 +193,49 @@ def run_anonymize(qi_list, data_file, hierarchy_file_dir, k=5):
 
     return df
 
+
+
+def decrypt_and_compare(anonymized_file, original_file, identifiers, password):
+    """
+    Decrypts the anonymized data and compares it with the original data.
+
+    :param anonymized_file: Path to the anonymized CSV file
+    :param original_file: Path to the original CSV file
+    :param identifiers: List of identifier column names
+    :param password: Password used for encryption
+    """
+    # Read the anonymized and original data
+    anonymized_df = pd.read_csv(anonymized_file)
+    original_df = pd.read_csv(original_file)
+
+    # Generate the key from the password
+    key = generate_key(password)
+    fernet = Fernet(key)
+
+    # Decrypt the identifiers in the anonymized data
+    for identifier in identifiers:
+        if identifier in anonymized_df.columns:
+            anonymized_df[identifier] = anonymized_df[identifier].apply(lambda x: decrypt_value(x, fernet))
+
+    # Compare the decrypted data with the original data
+    for identifier in identifiers:
+        if identifier in anonymized_df.columns and identifier in original_df.columns:
+            print(f"\nComparing {identifier}:")
+            print("Anonymized (Decrypted):")
+            print(anonymized_df[identifier].head())
+            print("\nOriginal:")
+            print(original_df[identifier].head())
+
+            # Check if the decrypted values match the original values
+            match = (anonymized_df[identifier] == original_df[identifier]).all()
+            print(f"\nAll values match: {match}")
+
+    print("\nComparison complete.")
+
+
+
+
+
 def anonymize_execute():
     tic = time.time()
     k = 10  # Example k value. You can change it as per your requirement.
@@ -163,6 +244,7 @@ def anonymize_execute():
     current_dir = os.path.dirname(__file__)  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/
     data_file = os.path.join(current_dir, "dataset.csv")   # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv
     hierarchy_file_dir = os.path.join(current_dir, "hierarchy/")  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/hierarchy
+    print(f"The path of hirarchy is: {hierarchy_file_dir}")
     data_frame = run_anonymize(qi_list, data_file, hierarchy_file_dir, k)
 
     print(f"run_anonymize executed with K = {k}")
@@ -193,33 +275,6 @@ def anonymize_execute():
 
     return df_short
 
-
-
-#
-#
-# if __name__ == '__main__':
-#     print("Test mode: Running mondrian.py")
-#     k = 3
-#     date_file_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv"
-#     anonymized_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/anonymized"
-#     hierarchy_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/hierarchy"
-#
-#     quasi_identifiers = ['sex', 'age', 'race', 'marital-status', 'education', 'native-country', 'workclass', 'occupation']
-#     sensitive_attributes = ['salary-class']
-#     identifiers = ['ID', 'soc_sec_id', 'given_name', 'surname']
-#
-#     #     ###### For a different dataset #########################################
-#     #     # qi = ["Age","BMI","Sex","Height","Weight"]
-#     #     # sa = ["Diagnosis_Presumptive"]    ### sensitive_attributes
-#     #     # identifiers = ["Diagnosis","Alvarado_Score","Paedriatic_Appendicitis_Score"]
-#     #     ########################################################################
-#
-#     data_frame = run_anonymize(quasi_identifiers, date_file_path, hierarchy_file_dir_path, k=k)
-#
-#     # Save the anonymized DataFrame to a CSV file
-#     output_file_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
-#     data_frame.to_csv(output_file_path, index=False)
-#     print(f"Anonymized data saved to: {output_file_path}")
 
 
 
