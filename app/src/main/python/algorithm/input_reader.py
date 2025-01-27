@@ -23,7 +23,7 @@ def get_csvfile(filename):
     try:
         df = pd.read_csv(input_path)
 
-        df_short = df.head(3)
+        df_short = df.head(10)
         print(df_short)
 
         return df_short, input_path

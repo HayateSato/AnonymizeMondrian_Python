@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
             // pop up massage to show that the button is clicked
-            Toast toast1 = Toast.makeText(getApplicationContext(), "Anonymization button clicked!", Toast.LENGTH_SHORT);
+            Toast toast1 = Toast.makeText(getApplicationContext(), "Anonymization button clicked!", Toast.LENGTH_LONG);
             toast1.show();
             Toast toast2 = Toast.makeText(getApplicationContext(), "Processing in the backend, it might take 10-30 seconds", Toast.LENGTH_LONG);
             toast2.show();

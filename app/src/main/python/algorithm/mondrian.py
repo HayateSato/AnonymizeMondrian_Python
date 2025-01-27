@@ -279,6 +279,6 @@ def anonymize_execute():
     execution_time = toc - tic
     print(f"Execution time: {execution_time:.2f} seconds")
 
-    df_short = data_frame[['age', 'race', 'marital-status', 'education', 'native-country', 'soc_sec_id']].iloc[850:880]
+    df_short = data_frame[['age', 'race', 'marital-status', 'education', 'native-country', 'soc_sec_id']].iloc[850:890]
     print(df_short)
     return df_short
