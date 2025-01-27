@@ -2,7 +2,8 @@
 import os
 import pandas as pd
 import hierarchy_tree as h_tree
-from input_reader import get_csvfile
+# from input_reader import get_csvfile
+# from password_receiver import get_password
 import time
 
 
@@ -248,9 +249,21 @@ def anonymize_execute():
     k = 10  # Example k value. You can change it as per your requirement.
     # Prompt for password
     # password = input("Enter a password for encrypting identifiers (leave blank to skip encryption): ")
-    password = (" ")
+    # password = (" ")  # only this works
+    # password_received = password  # even empty password is passed as the password
+    password_received = " "
 
-    data_frame = run_anonymize(qi_list, identifiers, date_file_path, hierarchy_file_dir_path, k=k, password=password)
+
+
+
+    # Use the provided password
+    # if password:
+    #     print(f"Password received: {password}")
+    # else:
+    #     password = (" ")
+    #     print("No password provided. Skipping encryption.")
+
+    data_frame = run_anonymize(qi_list, identifiers, date_file_path, hierarchy_file_dir_path, k=k, password=password_received)
 
     print(f"run_anonymize executed with K = {k}")
 

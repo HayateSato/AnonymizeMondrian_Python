@@ -1,38 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- TextView for output -->
 
+    <!--    &lt;!&ndash; EditText for password input &ndash;&gt;-->
+<!--    <EditText-->
+<!--        android:id="@+id/password_input"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Enter password"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:padding="8dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textViewOutput"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/csv_button"-->
+<!--        app:layout_constraintVertical_bias="0.5" />-->
+
+    <!-- Button to read CSV -->
+
+
+    <!-- Button to start anonymization -->
     <TextView
         android:id="@+id/textViewOutput"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="hello world"
-        android:textSize="8sp"
+        android:autoText="false"
+        android:gravity="left"
+        android:padding="8dp"
+        android:text="Output will appear here"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.439" />
+        app:layout_constraintVertical_bias="0.178" />
 
     <Button
         android:id="@+id/csv_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#8BC34A"
         android:backgroundTint="#8BC34A"
         android:onClick="readButtonPythonRun"
-        android:text="read csv file"
-        android:textColorLink="#8BC34A"
+        android:padding="8dp"
+        android:text="Read CSV File"
+        android:textColorLink="#03F453"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.134" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
         android:id="@+id/anonymize_button"
@@ -40,47 +66,110 @@
         android:layout_height="wrap_content"
         android:onClick="onAnonymizeButtonClick"
         android:text="Start Anonymization"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/csv_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.898" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".MainActivity">-->
+
 
 <!--    <TextView-->
-<!--        android:id="@+id/AppName"-->
+<!--        android:id="@+id/textViewOutput"-->
 <!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:text="Anonymization with Python"-->
-<!--        android:textSize="28sp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hello world"-->
+<!--        android:textSize="8sp"-->
 <!--        app:layout_constraintBottom_toBottomOf="parent"-->
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.0" />-->
+<!--        app:layout_constraintVertical_bias="0.439" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/csv_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#8BC34A"-->
+<!--        android:backgroundTint="#8BC34A"-->
+<!--        android:onClick="readButtonPythonRun"-->
+<!--        android:text="read csv file"-->
+<!--        android:textColorLink="#8BC34A"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.134" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/anonymize_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:onClick="onAnonymizeButtonClick"-->
+<!--        android:text="Start Anonymization"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.898" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/password_input"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Enter password"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:marginBottom="16dp"-->
+<!--        android:padding="8dp"-->
+<!--        tools:layout_editor_absoluteX="28dp"-->
+<!--        tools:layout_editor_absoluteY="662dp" />-->
 
 
-    <!--    <TableLayout-->
-    <!--        android:id="@+id/tableViewOutput"-->
-    <!--        android:layout_width="409dp"-->
-    <!--        android:layout_height="341dp"-->
-    <!--        tools:layout_editor_absoluteX="1dp"-->
-    <!--        tools:layout_editor_absoluteY="389dp">-->
+<!--    &lt;!&ndash;    <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;        android:id="@+id/AppName"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_height="0dp"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:text="Anonymization with Python"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:textSize="28sp"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintVertical_bias="0.0" />&ndash;&gt;-->
 
-    <!--        <TableRow-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent" />-->
 
-    <!--        <TableRow-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent" />-->
+<!--    &lt;!&ndash;    <TableLayout&ndash;&gt;-->
+<!--    &lt;!&ndash;        android:id="@+id/tableViewOutput"&ndash;&gt;-->
+<!--    &lt;!&ndash;        android:layout_width="409dp"&ndash;&gt;-->
+<!--    &lt;!&ndash;        android:layout_height="341dp"&ndash;&gt;-->
+<!--    &lt;!&ndash;        tools:layout_editor_absoluteX="1dp"&ndash;&gt;-->
+<!--    &lt;!&ndash;        tools:layout_editor_absoluteY="389dp">&ndash;&gt;-->
 
-    <!--        <TableRow-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent" />-->
+<!--    &lt;!&ndash;        <TableRow&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
 
-    <!--        <TableRow-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent" />-->
-    <!--    </TableLayout>-->
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--    &lt;!&ndash;        <TableRow&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
+
+<!--    &lt;!&ndash;        <TableRow&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
+
+<!--    &lt;!&ndash;        <TableRow&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
+<!--    &lt;!&ndash;    </TableLayout>&ndash;&gt;-->
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
