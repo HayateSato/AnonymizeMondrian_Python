@@ -8,7 +8,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import base64
 
 # custom library
-import hierarchy_tree as h_tree
+import algorithm.hierarchy_tree as h_tree
 
 def summarized(partition, dim, qi_list):
     """
@@ -240,31 +240,34 @@ def decrypt_and_compare(anonymized_file, original_file, identifiers, password):
 def anonymize_execute():
     tic = time.time()  # time count starts
 
+    current_dir = os.path.dirname(__file__)  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/algorithm
+    parent_dir = os.path.dirname(current_dir)  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app
+    input_dir = os.path.join(parent_dir, "input/") # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/input
+    output_dir = os.path.join(parent_dir, "output/anonymized/") # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/output/anonymized
+
     # defining the inputs for t
     qi_list = ['sex', 'age', 'race', 'marital-status', 'education', 'native-country', 'workclass', 'occupation']
     identifiers = ['ID', 'soc_sec_id', 'given_name', 'surname']
-    current_dir = os.path.dirname(__file__)  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/
-    date_file_path = os.path.join(current_dir, "dataset.csv")   # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv
-    hierarchy_file_dir_path = os.path.join(current_dir, "hierarchy/")  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/hierarchy
+    input_path = os.path.join(input_dir, "dataset.csv") # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/input/dataset.csv
+    hierarchy_file_path = os.path.join(current_dir, "hierarchy/")  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/algorithm/hierarchy
     k = 5
     password_received = " "
 
     # log
     print("running anonymization")
-    print(f"run_anonymize executed with K = {k}")
+    print(f"run_anonymize executing with K = {k}")
     if password_received == " ":
-        print(f"run_anonymize executed with default password")
+        print(f"run_anonymize executing with default password")
     else:
-        print(f"run_anonymize executed with given password")
+        print(f"run_anonymize executing with given password")
 
     # passing the input to the function, saving the result to data_frame
-    data_frame = run_anonymize(qi_list, identifiers, date_file_path, hierarchy_file_dir_path, k=k, password=password_received)
+    data_frame = run_anonymize(qi_list, identifiers, input_path, hierarchy_file_path, k=k, password=password_received)
 
-    # specifying the path where the results will be saved
-    anonymized_file_dir_path =  os.path.join(current_dir, "anonymized/")
-    os.makedirs(anonymized_file_dir_path, exist_ok=True) # Create the directory if it doesn't exist
+
+    os.makedirs(output_dir, exist_ok=True) # Create the directory if it doesn't exist
     # specifying the csv file name with k-value
-    output_file_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
+    output_file_path = os.path.join(output_dir, f'k_{k}_anonymized_dataset.csv')
     # saving the anonymized data to a new file in the same directory
     try:
         data_frame.to_csv(output_file_path, index=False)
