@@ -1,17 +1,14 @@
 # Multi-Dimensional Mondrian for k-anonymity
 import os
 import pandas as pd
-import hierarchy_tree as h_tree
-# from input_reader import get_csvfile
-# from password_receiver import get_password
 import time
-
-
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import base64
 
+# custom library
+import hierarchy_tree as h_tree
 
 def summarized(partition, dim, qi_list):
     """
@@ -234,66 +231,51 @@ def decrypt_and_compare(anonymized_file, original_file, identifiers, password):
 
 
 
+    #### DUMMY FUNCTION TO EXECUTE THE ANONYMIZATION #################################
+    # the below function is called in the main function - MainActivity
+    # above codes should not be changed
+    #################################################################################
 
 
 def anonymize_execute():
-    tic = time.time()
+    tic = time.time()  # time count starts
 
-    print("running anonymization")
+    # defining the inputs for t
     qi_list = ['sex', 'age', 'race', 'marital-status', 'education', 'native-country', 'workclass', 'occupation']
     identifiers = ['ID', 'soc_sec_id', 'given_name', 'surname']
     current_dir = os.path.dirname(__file__)  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/
     date_file_path = os.path.join(current_dir, "dataset.csv")   # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/dataset.csv
     hierarchy_file_dir_path = os.path.join(current_dir, "hierarchy/")  # /data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/hierarchy
-    # data_frame = run_anonymize(qi_list, data_file, hierarchy_file_dir, k)
-    k = 10  # Example k value. You can change it as per your requirement.
-    # Prompt for password
-    # password = input("Enter a password for encrypting identifiers (leave blank to skip encryption): ")
-    # password = (" ")  # only this works
-    # password_received = password  # even empty password is passed as the password
+    k = 5
     password_received = " "
 
+    # log
+    print("running anonymization")
+    print(f"run_anonymize executed with K = {k}")
+    if password_received == " ":
+        print(f"run_anonymize executed with default password")
+    else:
+        print(f"run_anonymize executed with given password")
 
-
-
-    # Use the provided password
-    # if password:
-    #     print(f"Password received: {password}")
-    # else:
-    #     password = (" ")
-    #     print("No password provided. Skipping encryption.")
-
+    # passing the input to the function, saving the result to data_frame
     data_frame = run_anonymize(qi_list, identifiers, date_file_path, hierarchy_file_dir_path, k=k, password=password_received)
 
-    print(f"run_anonymize executed with K = {k}")
-
-    # Use the app's files directory to store the output
-    anonymized_file_dir_path = "/data/data/com.example.pythoncalculation/files/chaquopy/AssetFinder/app/anonymized/"   # os.path.join(current_dir, "anonymized/")
-
-    # Ensure the directory exists
-    os.makedirs(anonymized_file_dir_path, exist_ok=True)
-
+    # specifying the path where the results will be saved
+    anonymized_file_dir_path =  os.path.join(current_dir, "anonymized/")
+    os.makedirs(anonymized_file_dir_path, exist_ok=True) # Create the directory if it doesn't exist
+    # specifying the csv file name with k-value
     output_file_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
-
+    # saving the anonymized data to a new file in the same directory
     try:
         data_frame.to_csv(output_file_path, index=False)
         print(f"Anonymized data saved to: {output_file_path}")
     except Exception as e:
         print(f"Error saving file: {str(e)}")
-        # # Optionally, you can try to save in a different location if this fails
-        # fallback_path = os.path.join(anonymized_file_dir_path, f'k_{k}_anonymized_dataset.csv')
-        # data_frame.to_csv(fallback_path, index=False)
-        # print(f"Anonymized data saved to fallback location: {fallback_path}")
 
-    toc = time.time()
+    toc = time.time() # time count stops here
     execution_time = toc - tic
-    # df_short = data_frame.iloc[850:880, :7]
-    df_short = data_frame[['age', 'race', 'marital-status', 'education', 'native-country', 'soc_sec_id']].iloc[850:880]
-    print(df_short)
     print(f"Execution time: {execution_time:.2f} seconds")
 
+    df_short = data_frame[['age', 'race', 'marital-status', 'education', 'native-country', 'soc_sec_id']].iloc[850:880]
+    print(df_short)
     return df_short
-
-
-
-
