@@ -7,13 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Button to start anonymization -->
-
     <TextView
         android:id="@+id/textViewOutput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autoText="false"
         android:gravity="left"
         android:padding="8dp"
         android:text="Output will appear here"
@@ -36,26 +33,64 @@
         android:text="Read CSV File"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.254"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintVertical_bias="0.023" />
 
-    <Button
-        android:id="@+id/anonymize_button"
+    <TextView
+        android:id="@+id/Instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="576dp"
+        android:text="Choose your desired K-Value from below. \nOnce clicked the anonymization will be executed"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/anonymize_button_k2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="16dp"
-        android:autoText="false"
         android:backgroundTint="#9575CD"
-        android:onClick="onAnonymizeButtonClick"
+        android:onClick="onAnonymizeButtonClick_k2"
         android:padding="8dp"
-        android:text="Start Anonymization"
+        android:text="K=2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.013" />
+        app:layout_constraintVertical_bias="0.904" />
+
+    <Button
+        android:id="@+id/anonymize_button_k5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#9575CD"
+        android:onClick="onAnonymizeButtonClick_k5"
+        android:padding="8dp"
+        android:text="K=5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.904" />
+
+    <Button
+        android:id="@+id/anonymize_button_k10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="268dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#9575CD"
+        android:onClick="onAnonymizeButtonClick_k10"
+        android:padding="8dp"
+        android:text="K=10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.904" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
