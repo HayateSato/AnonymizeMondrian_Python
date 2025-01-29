@@ -17,7 +17,7 @@
         android:gravity="left"
         android:padding="8dp"
         android:text="Output will appear here"
-        android:textSize="11sp"
+        android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
