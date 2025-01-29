@@ -70,7 +70,8 @@ plugins {
 
 ## Project Stucture
 
-![image](https://github.com/user-attachments/assets/eb1a8ddc-685d-4d6e-b1a6-f73421030a47)
+![image](https://github.com/user-attachments/assets/f6525508-da0d-4d7e-b2c6-f33866ee3c6b)
+
 
 
 
