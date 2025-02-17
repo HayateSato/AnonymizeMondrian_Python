@@ -27,38 +27,30 @@ public class MainActivity extends AppCompatActivity {
             Python.start(new AndroidPlatform(this));
         }
     }
-
-    // Read button: function in input_reader.py is called here
     public void readButtonPythonRun(View view) {
         try (PyObject pyObjectResult = Python.getInstance()
                 .getModule("algorithm.input_reader")
                 .callAttr("get_csvfile", "dataset.csv")) {
 
-            // Show result in the frontend
             textViewOutput.setText(pyObjectResult.toString());
         } catch (Exception e) {
             Log.e(TAG, "Error reading CSV file", e);
             textViewOutput.setText(getString(R.string.error_message, e.getMessage()));
         }
     }
-
-    // Anonymize button: triggers anonymizing the CSV file using mondrian.py
     public void onAnonymizeButtonClick(View view, int kValue) {
         try {
             int durationEstimate = 70 / kValue;
-
-            // Show toast messages
+            
             showToast("Anonymization button (K=" + kValue + ") clicked!");
             showToast("Processing in the backend. Please wait for a short moment");
             showToast("It might take " + durationEstimate + "-" + (durationEstimate + 10) + " seconds");
             showToast("Once the anonymization is completed, the result will be shown above");
 
-            // Call the Python function to anonymize the CSV file
             try (PyObject pyObjectAnonymizedDataResult = Python.getInstance()
                     .getModule("algorithm.mondrian")
                     .callAttr("anonymize_execute", kValue)) {
 
-                // Log and show completion message
                 Log.d(TAG, "MainActivity: Anonymization successfully completed");
                 showToast("Anonymization is completed!");
                 textViewOutput.setText(pyObjectAnonymizedDataResult.toString());
