@@ -19,8 +19,8 @@ Installed Plugins
 Python Environment:
 - Python 3.8
 - Used Libraries: 
-	- NumPy 
-	- Pandas
+	- NumPy : !!!!! version name!!!!!
+	- Pandas: !!!!! version name!!!!!
 - Built-in Libraries: (requires no importing)
 	- os
 	- globe

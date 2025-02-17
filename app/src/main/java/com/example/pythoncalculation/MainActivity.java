@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.Toast;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.chaquo.python.android.AndroidPlatform;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView textViewOutput;
@@ -69,19 +69,15 @@ public class MainActivity extends AppCompatActivity {
             showToast("Anonymization failed");
         }
     }
-
     public void onAnonymizeButtonClick_k2(View view) {
         onAnonymizeButtonClick(view, 2);
     }
-
     public void onAnonymizeButtonClick_k5(View view) {
         onAnonymizeButtonClick(view, 5);
     }
-
     public void onAnonymizeButtonClick_k10(View view) {
         onAnonymizeButtonClick(view, 10);
     }
-
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
