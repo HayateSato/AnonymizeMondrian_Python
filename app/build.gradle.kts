@@ -17,8 +17,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            // On Apple silicon, you can omit x86_64.
             abiFilters += listOf("arm64-v8a", "x86_64")
+        }
+        buildFeatures {
+            viewBinding = true
         }
     }
 
@@ -55,7 +57,6 @@ chaquopy {
             install("numpy")
             install("pandas")
             install ("cryptography")
-//            install("glob")
         }
     }
 }
